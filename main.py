@@ -13,24 +13,26 @@ class Obrazki:
         self.original_image = None
         self.processed_image = None
 
+        self.language = "polish"  # Domyślny język
+
         self.create_widgets()
 
     def create_widgets(self):
         # Przyciski do wywołania funkcji przetwarzających obraz
-        self.reconstruction_button = tk.Button(self.master, text="Algorytm rekonstrukcji", command=self.reconstruction)
+        self.reconstruction_button = tk.Button(self.master, text=self.get_button_label("reconstruction"), command=self.reconstruction)
         self.reconstruction_button.grid(row=0, column=0, padx=10, pady=10)
 
-        self.marker_reconstruction_button = tk.Button(self.master, text="Rekonstrukcja markerów", command=self.marker_reconstruction)
+        self.marker_reconstruction_button = tk.Button(self.master, text=self.get_button_label("marker_reconstruction"), command=self.marker_reconstruction)
         self.marker_reconstruction_button.grid(row=0, column=1, padx=10, pady=10)
 
-        self.clean_edges_button = tk.Button(self.master, text="Czyszczenie brzegów", command=self.clean_edges)
+        self.clean_edges_button = tk.Button(self.master, text=self.get_button_label("clean_edges"), command=self.clean_edges)
         self.clean_edges_button.grid(row=0, column=2, padx=10, pady=10)
 
-        self.fill_holes_button = tk.Button(self.master, text="Zalewanie otworów", command=self.fill_holes)
+        self.fill_holes_button = tk.Button(self.master, text=self.get_button_label("fill_holes"), command=self.fill_holes)
         self.fill_holes_button.grid(row=0, column=3, padx=10, pady=10)
 
         # Przycisk do wczytywania obrazu
-        self.load_image_button = tk.Button(self.master, text="Wczytaj obraz", command=self.load_image)
+        self.load_image_button = tk.Button(self.master, text=self.get_button_label("load_image"), command=self.load_image)
         self.load_image_button.grid(row=1, column=0, padx=10, pady=10)
 
         # Wyświetlanie obrazu
@@ -43,8 +45,55 @@ class Obrazki:
         self.processed_image_label = tk.Label(self.master)
         self.processed_image_label.grid(row=2, column=1, padx=10, pady=10)
 
-        self.all_operations_button = tk.Button(self.master, text="Wykonaj wszystkie operacje",command=self.perform_all_operations)
+        self.all_operations_button = tk.Button(self.master, text=self.get_button_label("all_operations"), command=self.perform_all_operations)
         self.all_operations_button.grid(row=0, column=4, padx=10, pady=10)
+
+        # Przycisk do zmiany języka
+        self.language_button = tk.Button(self.master, text="Change Language", command=self.change_language)
+        self.language_button.grid(row=1, column=4, padx=10, pady=10)
+
+    def change_language(self):
+        if self.language == "polish":
+            self.language = "english"
+        else:
+            self.language = "polish"
+
+        # Aktualizacja nazw przycisków
+        self.reconstruction_button.config(text=self.get_button_label("reconstruction"))
+        self.marker_reconstruction_button.config(text=self.get_button_label("marker_reconstruction"))
+        self.clean_edges_button.config(text=self.get_button_label("clean_edges"))
+        self.fill_holes_button.config(text=self.get_button_label("fill_holes"))
+        self.load_image_button.config(text=self.get_button_label("load_image"))
+        self.all_operations_button.config(text=self.get_button_label("all_operations"))
+
+    def get_button_label(self, button_name):
+        # Zwraca etykietę przycisku na podstawie aktualnego języka
+        if self.language == "polish":
+            if button_name == "reconstruction":
+                return "Algorytm rekonstrukcji"
+            elif button_name == "marker_reconstruction":
+                return "Rekonstrukcja markerów"
+            elif button_name == "clean_edges":
+                return "Czyszczenie brzegów"
+            elif button_name == "fill_holes":
+                return "Zalewanie otworów"
+            elif button_name == "load_image":
+                return "Wczytaj obraz"
+            elif button_name == "all_operations":
+                return "Wykonaj wszystkie operacje"
+        elif self.language == "english":
+            if button_name == "reconstruction":
+                return "Reconstruction Algorithm"
+            elif button_name == "marker_reconstruction":
+                return "Marker Reconstruction"
+            elif button_name == "clean_edges":
+                return "Clean Edges"
+            elif button_name == "fill_holes":
+                return "Fill Holes"
+            elif button_name == "load_image":
+                return "Load Image"
+            elif button_name == "all_operations":
+                return "Perform All Operations"
 
     def load_image(self):
         # Wczytanie obrazu z pliku
